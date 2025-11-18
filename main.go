@@ -11,7 +11,7 @@ func main() {
 	validate := validator.New()
 	err := validate.Struct(campaign)
 
-	if err != nil {
+	if err == nil {
 		println("nenhum erro")
 	} else {
 		validateError := err.(validator.ValidationErrors)
