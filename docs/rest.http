@@ -18,7 +18,7 @@ POST  http://localhost:3000/product
 POST  http://localhost:3000/campaign
 
 {
-	"name": "mouse",
+	"name": "mou",
 	"content": "change password",
 	"emails": ["test@t.com"]
 }
