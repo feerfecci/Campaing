@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/render"
 )
 
@@ -20,21 +21,35 @@ func main() {
 
 	//ROUTES
 	r := chi.NewRouter()
+
+	//USAR MIDDLEWARE PRÓPRIO
+	// r.Use(myMiddleware2)
+	// r.Use(myMiddleware)
+
+	//OU USAR OS DO CHI
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		product := r.URL.Query().Get("product")
-		id := r.URL.Query().Get("id")
-		if product != "" {
-			w.Write([]byte(product + id))
+		println("endpoint")
+		// product := r.URL.Query().Get("product")
+		// id := r.URL.Query().Get("id")
+		// if product != "" {
+		// 	w.Write([]byte(product + id))
 
-		} else {
+		// } else {
 
-			w.Write([]byte("paramteste"))
-		}
+		// 	w.Write([]byte("paramteste"))
+		// }
 	})
+
 	r.Get("/{productName}", func(w http.ResponseWriter, r *http.Request) {
 		param := chi.URLParam(r, "productName")
 		w.Write([]byte(param))
 	})
+
 	r.Get("/json", func(w http.ResponseWriter, r *http.Request) {
 		// w.Header().Set("Content-Type", "aplication/json")
 		// obj := map[string]string{"message": "sucess"}
@@ -43,6 +58,7 @@ func main() {
 		obj := map[string]string{"message": "sucess"}
 		render.JSON(w, r, obj)
 	})
+
 	r.Post("/product", func(w http.ResponseWriter, r *http.Request) {
 		var product product
 		render.DecodeJSON(r.Body, &product)
@@ -76,4 +92,19 @@ func main() {
 	// 		}
 	// 	}
 	// }
+}
+
+func myMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		println("before")
+		next.ServeHTTP(w, r)
+		println("after")
+	})
+}
+func myMiddleware2(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		println("request: ", r.Method, " - url: ", r.URL)
+		next.ServeHTTP(w, r)
+		println("after2")
+	})
 }
