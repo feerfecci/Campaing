@@ -5,18 +5,28 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/render"
 )
 
 // "campaing/internal/domain/campaign"
 
 // "github.com/go-playground/validator/v10"
+func main() {
+	r := chi.NewRouter()
+
+	r.Use(middleware.RequestID)
+	r.Use(middleware.RealIP)
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+
+	http.ListenAndServe(":3000", r)
+}
+
+/*
 
 type product struct {
 	ID   int
 	Name string
 }
-
 func main() {
 
 	//ROUTES
@@ -108,3 +118,4 @@ func myMiddleware2(next http.Handler) http.Handler {
 		println("after2")
 	})
 }
+*/
