@@ -11,6 +11,11 @@ import (
 
 // "github.com/go-playground/validator/v10"
 
+type product struct {
+	ID   int
+	Name string
+}
+
 func main() {
 
 	//ROUTES
@@ -38,6 +43,13 @@ func main() {
 		obj := map[string]string{"message": "sucess"}
 		render.JSON(w, r, obj)
 	})
+	r.Post("/product", func(w http.ResponseWriter, r *http.Request) {
+		var product product
+		render.DecodeJSON(r.Body, &product)
+		product.ID = 5
+		render.JSON(w, r, product)
+	})
+
 	http.ListenAndServe(":3000", r)
 
 	//AULA VALIDAÇÃO
