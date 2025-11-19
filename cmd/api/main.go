@@ -1,15 +1,16 @@
 package main
 
 import (
+	"campaing/internal/domain/campaign"
+	"campaing/internal/endpoints"
+	"campaing/internal/infrastruct/database"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/render"
 )
 
-// "campaing/internal/domain/campaign"
-
-// "github.com/go-playground/validator/v10"
 func main() {
 	r := chi.NewRouter()
 
@@ -18,48 +19,15 @@ func main() {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	http.ListenAndServe(":3000", r)
-}
-
-/*
-
-type product struct {
-	ID   int
-	Name string
-}
-func main() {
-	r := chi.NewRouter()
-
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-
-	service := campaign.Service{
+	campaignService := campaign.Service{
 		Repository: &database.CampaignRepository{},
 	}
 
-	r.Post("/campaign", func(w http.ResponseWriter, r *http.Request) {
-		var request contract.NewCampaign
-		render.DecodeJSON(r.Body, &request)
-
-		id, err := service.Create(request)
-
-		if err != nil {
-
-			if errors.Is(err, internalerrors.ErrInternal) {
-				render.Status(r, 500)
-			} else {
-				render.Status(r, 400)
-			}
-			render.JSON(w, r, map[string]string{"error": err.Error()})
-			return
-		}
-
-		render.Status(r, 201) //status de criação
-		render.JSON(w, r, map[string]string{"id": id})
-
-	})
+	handler := endpoints.Handler{
+		CampaignService: campaignService,
+	}
+	r.Post("/campaign", handler.CampaignPost)
+	r.Get("/campaign", handler.CampaignGet)
 
 	http.ListenAndServe(":3000", r)
 

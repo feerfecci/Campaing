@@ -1,24 +1,27 @@
-GET http://localhost:3000/
+# GET http://localhost:3000/
 
-###
+# ###
 
-GET http://localhost:3000/json
+# GET http://localhost:3000/json
 
-###
+# ###
 
 
-POST  http://localhost:3000/product
+# POST  http://localhost:3000/product
 
-{
-    "name": "mouse"
-}
+# {
+#     "name": "mouse"
+# }
 
 ###
 
 POST  http://localhost:3000/campaign
 
 {
-	"name": "mou",
+	"name": "mouse2",
 	"content": "change password",
 	"emails": ["test@t.com"]
 }
+
+###
+GET   http://localhost:3000/campaign
