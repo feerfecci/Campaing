@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/render"
 )
 
 // "campaing/internal/domain/campaign"
@@ -28,6 +29,14 @@ func main() {
 	r.Get("/{productName}", func(w http.ResponseWriter, r *http.Request) {
 		param := chi.URLParam(r, "productName")
 		w.Write([]byte(param))
+	})
+	r.Get("/json", func(w http.ResponseWriter, r *http.Request) {
+		// w.Header().Set("Content-Type", "aplication/json")
+		// obj := map[string]string{"message": "sucess"}
+		// b, _ := json.Marshal(obj) // trasnforma em bite
+		// w.Write(b)
+		obj := map[string]string{"message": "sucess"}
+		render.JSON(w, r, obj)
 	})
 	http.ListenAndServe(":3000", r)
 
