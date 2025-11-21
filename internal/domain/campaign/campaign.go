@@ -11,25 +11,22 @@ type Contact struct {
 	Email string `validate:"email"`
 }
 
+const (
+	Pending string = "Pending"
+	Started        = "Started"
+	Done           = "Done"
+)
+
 type Campaign struct {
-	ID        string    `validate:"required"`
-	Name      string    `validate:"min=5,max=24"`
+	ID        string `validate:"required"`
+	Name      string `validate:"min=5,max=24"`
+	Status    string
 	CreatedOn time.Time `validate:"required"`
 	Content   string    `validate:"min=5,max=1024"`
 	Contacts  []Contact `validate:"min=1,dive"`
 }
 
 func NewCampaign(name string, content string, emails []string) (*Campaign, error) {
-
-	// if name == "" {
-	// 	return nil, errors.New("name is required")
-	// } else if content == "" {
-	// 	return nil, errors.New("content is required")
-	// } else if len(emails) == 0 {
-	// 	return nil, errors.New("contacts is required")
-
-	// }
-
 	contacts := make([]Contact, len(emails))
 
 	for index, email := range emails {
@@ -40,6 +37,7 @@ func NewCampaign(name string, content string, emails []string) (*Campaign, error
 		ID:        xid.New().String(),
 		Name:      name,
 		Content:   content,
+		Status:    Pending,
 		CreatedOn: time.Now(),
 		Contacts:  contacts,
 	}

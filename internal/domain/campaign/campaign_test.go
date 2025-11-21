@@ -41,6 +41,16 @@ func Test_NewCampaign(t *testing.T) {
 	assert.Equal(len(campaign.Contacts), len(contacts))
 }
 
+func Test_NewCampaign_StatusPending(t *testing.T) {
+	//arrange (escopo de variáveis)
+	assert := assert.New(t)
+
+	//act (primeiras declarações de objetos)
+	campaign, _ := NewCampaign(name, content, contacts)
+
+	assert.Equal(Pending, campaign.Status)
+
+}
 func Test_NewCampaign_IDIsNotNill(t *testing.T) {
 	//arrange (escopo de variáveis)
 	assert := assert.New(t)
