@@ -1,6 +1,8 @@
 package database
 
 import (
+	"campaing/internal/domain/campaign"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -12,6 +14,9 @@ func NewDb() *gorm.DB {
 	if err != nil {
 		panic("fail to connect to database")
 	}
+
+	db.AutoMigrate(&campaign.Campaign{}, &campaign.Contact{}) //colocar todas as tabelas para criar
+
 	return db
 
 }

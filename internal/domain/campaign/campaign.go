@@ -7,29 +7,37 @@ import (
 	"github.com/rs/xid"
 )
 
-type Contact struct {
-	Email string `validate:"email"`
-}
-
 const (
-	Pending string = "Pending"
-	Started        = "Started"
-	Done           = "Done"
+	Pending  = "Pending"
+	Canceled = "Canceled"
+	Started  = "Started"
+	Done     = "Done"
 )
 
+type Contact struct {
+	ID         string `gorm:"size:50"`
+	Email      string `validate:"email"`
+	CampaignId string `gorm:"size:50"`
+}
+
 type Campaign struct {
-	ID        string `validate:"required"`
-	Name      string `validate:"min=5,max=24"`
-	Status    string
-	CreatedOn time.Time `validate:"required"`
-	Content   string    `validate:"min=5,max=1024"`
+	ID        string    `validate:"required" gorm:"size:50"`
+	Name      string    `validate:"min=5,max=24" gorm:"size:100"`
+	Status    string    `gorm:"size:20"`
+	Content   string    `validate:"min=5,max=1024" gorm:"size:1024"`
 	Contacts  []Contact `validate:"min=1,dive"`
+	CreatedOn time.Time `validate:"required"`
+}
+
+func (c *Campaign) Cancel() {
+	c.Status = Canceled
 }
 
 func NewCampaign(name string, content string, emails []string) (*Campaign, error) {
 	contacts := make([]Contact, len(emails))
 
 	for index, email := range emails {
+		contacts[index].ID = xid.New().String()
 		contacts[index].Email = email
 	}
 
