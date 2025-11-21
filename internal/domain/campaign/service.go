@@ -8,6 +8,7 @@ import (
 
 type Service interface {
 	Create(newCampaign contract.NewCampaign) (string, error)
+	Get() ([]contract.CampaignReponse, error)
 	GetByID(idCampaign int) (*contract.CampaignReponse, error)
 	CancelByID(idCampaign string) error
 }
@@ -24,13 +25,33 @@ func (s *ServiceImp) Create(newCampaign contract.NewCampaign) (string, error) {
 		return "", err
 	}
 
-	err = s.Repository.Save(campaign)
+	err = s.Repository.Create(campaign)
 
 	if err != nil {
 		return "", internalerrors.ErrInternal
 	}
 
 	return campaign.ID, nil
+}
+
+func (s ServiceImp) Get() ([]contract.CampaignReponse, error) {
+	campaigns, err := s.Repository.Get()
+	if err != nil {
+		return nil, internalerrors.ErrInternal
+	}
+
+	// Converter para o contrato de resposta
+	var response []contract.CampaignReponse
+	for _, c := range campaigns {
+		response = append(response, contract.CampaignReponse{
+			ID:            c.ID,
+			Name:          c.Name,
+			Status:        c.Status,
+			AmountOfEmail: len(c.Contacts),
+		})
+	}
+
+	return response, nil
 }
 
 func (s *ServiceImp) GetByID(idCampaign string) (*contract.CampaignReponse, error) {
@@ -41,10 +62,11 @@ func (s *ServiceImp) GetByID(idCampaign string) (*contract.CampaignReponse, erro
 	}
 
 	return &contract.CampaignReponse{
-		ID:      campaign.ID,
-		Name:    campaign.Name,
-		Content: campaign.Content,
-		Status:  campaign.Status,
+		ID:            campaign.ID,
+		Name:          campaign.Name,
+		Content:       campaign.Content,
+		Status:        campaign.Status,
+		AmountOfEmail: len(campaign.Contacts),
 	}, nil
 
 }
@@ -60,7 +82,28 @@ func (s *ServiceImp) CancelByID(idCampaign string) error {
 	}
 
 	campaign.Cancel()
-	err = s.Repository.Save(campaign)
+	err = s.Repository.Update(campaign)
+
+	if err != nil {
+		return internalerrors.ErrInternal
+	}
+
+	return nil
+
+}
+func (s *ServiceImp) DeleteByID(idCampaign string) error {
+	campaign, err := s.Repository.GetByID(idCampaign)
+
+	if err != nil {
+		return internalerrors.ErrInternal
+	}
+
+	if campaign.Status != Pending {
+		return errors.New("Campaign status invalid")
+	}
+
+	campaign.Delete()
+	err = s.Repository.Delete(campaign)
 
 	if err != nil {
 		return internalerrors.ErrInternal
