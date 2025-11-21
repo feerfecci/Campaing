@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/go-chi/render"
 )
 
 func main() {
@@ -72,4 +71,3 @@ func myMiddleware2(next http.Handler) http.Handler {
 		println("after2")
 	})
 }
-*/
