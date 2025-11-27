@@ -58,11 +58,17 @@ func (s *ServiceImp) GetByID(idCampaign string) (*contract.CampaignReponse, erro
 	campaign, err := s.Repository.GetByID(idCampaign)
 
 	if err != nil {
-		return nil, internalerrors.ErrInternal
+
+		// if !errors.Is(err, gorm.ErrRecordNotFound) {
+		// 	return nil, internalerrors.ErrInternal
+		// }
+
+		return nil, internalerrors.ProcessErrorToReturn(err)
 	}
-	if campaign == nil {
-		return nil, nil
-	}
+
+	// if campaign == nil {
+	// 	return nil, nil
+	// }
 
 	return &contract.CampaignReponse{
 		ID:            campaign.ID,
@@ -73,11 +79,12 @@ func (s *ServiceImp) GetByID(idCampaign string) (*contract.CampaignReponse, erro
 	}, nil
 
 }
+
 func (s *ServiceImp) CancelByID(idCampaign string) error {
 	campaign, err := s.Repository.GetByID(idCampaign)
 
 	if err != nil {
-		return internalerrors.ErrInternal
+		return internalerrors.ProcessErrorToReturn(err)
 	}
 
 	if campaign.Status != Pending {
@@ -88,12 +95,13 @@ func (s *ServiceImp) CancelByID(idCampaign string) error {
 	err = s.Repository.Update(campaign)
 
 	if err != nil {
-		return internalerrors.ErrInternal
+		return internalerrors.ProcessErrorToReturn(err)
 	}
 
 	return nil
 
 }
+
 func (s *ServiceImp) DeleteByID(idCampaign string) error {
 	campaign, err := s.Repository.GetByID(idCampaign)
 

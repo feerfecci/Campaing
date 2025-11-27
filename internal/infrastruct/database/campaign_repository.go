@@ -2,7 +2,6 @@ package database
 
 import (
 	"campaing/internal/domain/campaign"
-	"errors"
 
 	"gorm.io/gorm"
 )
@@ -20,7 +19,7 @@ func (c *CampaignRepository) Create(campaign *campaign.Campaign) error {
 
 func (c *CampaignRepository) Update(campaign *campaign.Campaign) error {
 	// c.campaigns = append(c.campaigns, *campaign)
-	tx := c.Db.Create(campaign)
+	tx := c.Db.Save(campaign)
 	return tx.Error
 }
 
@@ -39,8 +38,8 @@ func (c *CampaignRepository) Get() ([]campaign.Campaign, error) {
 func (c *CampaignRepository) GetByID(ID string) (*campaign.Campaign, error) {
 	var campaign campaign.Campaign
 	tx := c.Db.Preload("Contacts").First(&campaign, "id = ?", ID)
-	if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
-		return nil, nil
-	}
+	// if errors.Is(tx.Error, gorm.ErrRecordNotFound) {
+	// 	return nil, nil
+	// }
 	return &campaign, tx.Error
 }
