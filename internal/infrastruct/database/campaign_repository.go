@@ -17,11 +17,11 @@ func (c *CampaignRepository) Create(campaign *campaign.Campaign) error {
 	return tx.Error
 }
 
-func (c *CampaignRepository) Update(campaign *campaign.Campaign) error {
-	// c.campaigns = append(c.campaigns, *campaign)
-	tx := c.Db.Save(campaign)
-	return tx.Error
-}
+// func (c *CampaignRepository) Cancel(campaign *campaign.Campaign) error {
+// 	// c.campaigns = append(c.campaigns, *campaign)
+// 	tx := c.Db.Save(campaign)
+// 	return tx.Error
+// }
 
 func (c *CampaignRepository) Delete(campaign *campaign.Campaign) error {
 

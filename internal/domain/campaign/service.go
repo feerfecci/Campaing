@@ -10,7 +10,7 @@ type Service interface {
 	Create(newCampaign contract.NewCampaign) (string, error)
 	Get() ([]contract.CampaignReponse, error)
 	GetByID(idCampaign int) (*contract.CampaignReponse, error)
-	CancelByID(idCampaign string) error
+	// CancelByID(idCampaign string) error
 }
 
 type ServiceImp struct {
@@ -80,27 +80,27 @@ func (s *ServiceImp) GetByID(idCampaign string) (*contract.CampaignReponse, erro
 
 }
 
-func (s *ServiceImp) CancelByID(idCampaign string) error {
-	campaign, err := s.Repository.GetByID(idCampaign)
+// func (s *ServiceImp) CancelByID(idCampaign string) error {
+// 	campaign, err := s.Repository.GetByID(idCampaign)
 
-	if err != nil {
-		return internalerrors.ProcessErrorToReturn(err)
-	}
+// 	if err != nil {
+// 		return internalerrors.ProcessErrorToReturn(err)
+// 	}
 
-	if campaign.Status != Pending {
-		return errors.New("Campaign status invalid")
-	}
+// 	if campaign.Status != Pending {
+// 		return errors.New("Campaign status invalid")
+// 	}
 
-	campaign.Cancel()
-	err = s.Repository.Update(campaign)
+// 	campaign.Cancel()
+// 	err = s.Repository.Update(campaign)
 
-	if err != nil {
-		return internalerrors.ProcessErrorToReturn(err)
-	}
+// 	if err != nil {
+// 		return internalerrors.ProcessErrorToReturn(err)
+// 	}
 
-	return nil
+// 	return nil
 
-}
+// }
 
 func (s *ServiceImp) DeleteByID(idCampaign string) error {
 	campaign, err := s.Repository.GetByID(idCampaign)
