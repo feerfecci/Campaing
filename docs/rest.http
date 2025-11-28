@@ -10,7 +10,7 @@ POST  {{url}}/campaign
 ###
 
 POST {{url}}/campaign/new_campaign
-Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoWGRwWm52aktSaHA3T0xURVNlQWV3NVNlQ1BxYVliTWlfU0lwNzZTbmVjIn0.eyJleHAiOjE3NjQzNDI5MzQsImlhdCI6MTc2NDM0MjYzNCwianRpIjoib25ydHJvOjFiZTIyNzNjLWJmMjgtZDk0MC1jZmJlLThhMDU4Y2MyZTIxMyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvcHJvdmlkZXIiLCJhdWQiOiJlbWFpbG4iLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJlbWFpbG4iLCJzaWQiOiJhZWM0YzdlOS1lNmUzLWM3OGQtZDhiMC1lNDNhZDkzMDk0OWUiLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkZFUk5BTkRPIEZFQ0NJIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZmVybmFuZG9mZWNjaUBob3RtYWlsLmNvbSIsImdpdmVuX25hbWUiOiJGRVJOQU5ETyIsImZhbWlseV9uYW1lIjoiRkVDQ0kiLCJlbWFpbCI6ImZlcm5hbmRvZmVjY2lAaG90bWFpbC5jb20ifQ.JxNMwQu2XeLDYmch4vCW6tSQl7qqITKRr0USzl134Rgm11gmhlWo4EA5fLzBoHeu20s4WmyyV53Pz0IxUXdk1Yx9-pqTShvPaqeoMHRRGJgGTgByROgago_HPjFWJdggzuUMfk-ICPSPs1_iY_uLZIM92Cg7opQsh5ep_pMtfGiN4-r-Qe32GzxC6rv4uKD-KUDRvt6AOSvF5rkoyt_AOQPGVr5A5MjLJ0MZyPq1FwtexiFRHwrK-Sna9oV4MpQoCkFMipcc9B73ZHJex8hNfv5LorY5--syBuFNt_cInGkXeoU3gy8o_6ITpb2NXQ_46erRT_CdQbiXYlQqE2KCXA
+Authorization: Bearer {{acess_token}}
 
 {
 	"name": "mouse2",
@@ -21,27 +21,29 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoWGRwWm
 ###
 
 GET {{url}}/campaign
+Authorization: Bearer {{acess_token}}
 
 ###
-GET {{url}}/campaign/d4g7jaiahcv0gt29e71g
+GET {{url}}/campaign/d4g7iuqahcv0gt29e70g
+Authorization: Bearer {{acess_token}}
 
 ###
 
-PATCH {{url}}/campaign/cancel/d4k8nt2ahcv2d16f899g
+# PATCH {{url}}/campaign/cancel/d4k8nt2ahcv2d16f899g
+# Authorization: Bearer {{acess_token}}
 
 ###
 
 DELETE {{url}}/campaign/delete/d4k8nt2ahcv2d16f899g
+Authorization: Bearer {{acess_token}}
 
 ###
+
+# @name token
 POST 	{{url_keycloak}}/realms/provider/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id=emailn&username=fernandofecci@hotmail.com&password=29522576&grant_type=password
-# client_id=emailn&client_secret=8tViBNV6DLT8Wo1BdUYOPipOhUoHLoV8&grant_type=client_credentials
 
 ###
-POST 	{{url_keycloak}}/realms/provider/protocol/openid-connect/token
-Content-Type: application/x-www-form-urlencoded
-
-client_id=emailn_users&username=fernandofecci@hotmail.com&password=29522576&grant_type=password
+@acess_token = {{token.response.body.access_token}}
