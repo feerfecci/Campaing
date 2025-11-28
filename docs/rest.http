@@ -2,10 +2,12 @@
 @url_keycloak = http://localhost:8080
 
 GET  {{url}}/ping
+Authorization: Bearer {{acess_token}}
 
 ###
 
-POST  {{url}}/campaign
+GET  {{url}}/campaign
+Authorization: Bearer {{acess_token}}
 
 ###
 

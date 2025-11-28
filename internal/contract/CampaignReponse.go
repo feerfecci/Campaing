@@ -6,4 +6,5 @@ type CampaignReponse struct {
 	Content       string
 	Status        string
 	AmountOfEmail int
+	CreatedBy     string
 }
