@@ -19,6 +19,11 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// errMail := mail.SendMail()
+	// if errMail != nil {
+	// 	log.Fatal("Error Sending eamil", errMail.Error())
+	// }
+	// return
 	r := chi.NewRouter()
 
 	r.Use(middleware.RequestID)
