@@ -105,7 +105,7 @@ func Test_Create_ValidateRepositorySave(t *testing.T) {
 
 func Test_GetByCampaignID(t *testing.T) {
 	assert := assert.New(t)
-	campaign, _ := NewCampaign(newCampaign.Name, newCampaign.Content, newCampaign.Emails)
+	campaign, _ := NewCampaign(newCampaign.Name, newCampaign.Content, newCampaign.Emails, newCampaign.CreatedBy)
 	repositoryMock := new(repositoryMock)
 	repositoryMock.On("GetByID", mock.MatchedBy(func(id string) bool {
 		return id == campaign.ID
@@ -122,7 +122,7 @@ func Test_GetByCampaignID(t *testing.T) {
 
 func Test_GetByCampaignIDError(t *testing.T) {
 	assert := assert.New(t)
-	campaign, _ := NewCampaign(newCampaign.Name, newCampaign.Content, newCampaign.Emails)
+	campaign, _ := NewCampaign(newCampaign.Name, newCampaign.Content, newCampaign.Emails, newCampaign.CreatedBy)
 	repositoryMock := new(repositoryMock)
 	repositoryMock.On("GetByID", mock.Anything).Return(nil, errors.New("Somethgin wrog"))
 	service.Repository = repositoryMock

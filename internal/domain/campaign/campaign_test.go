@@ -12,6 +12,7 @@ var (
 	name     = "Campaign X"
 	content  = "Body Hi"
 	contacts = []string{"email1@e.com", "email2@e.com"}
+	createBy = "user-123"
 	fake     = faker.New()
 )
 
@@ -20,7 +21,7 @@ func Test_NewCampaign(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	campaign, _ := NewCampaign(name, content, contacts)
+	campaign, _ := NewCampaign(name, content, contacts, createBy)
 
 	//assert (identifiçao de erros)
 	// println(campaign.ID)
@@ -46,7 +47,7 @@ func Test_NewCampaign_StatusPending(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	campaign, _ := NewCampaign(name, content, contacts)
+	campaign, _ := NewCampaign(name, content, contacts, createBy)
 
 	assert.Equal(Pending, campaign.Status)
 
@@ -56,7 +57,7 @@ func Test_NewCampaign_IDIsNotNill(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	campaign, _ := NewCampaign(name, content, contacts)
+	campaign, _ := NewCampaign(name, content, contacts, createBy)
 
 	assert.NotNil(campaign.ID)
 
@@ -68,7 +69,7 @@ func Test_NewCampaign_CreatedOnMustBeBow(t *testing.T) {
 	now := time.Now().Add(-time.Minute)
 
 	//act (primeiras declarações de objetos)
-	campaign, _ := NewCampaign(name, content, contacts)
+	campaign, _ := NewCampaign(name, content, contacts, createBy)
 
 	assert.Greater(campaign.CreatedOn, now)
 
@@ -79,7 +80,7 @@ func Test_NewCampaign_CreatedOnMustBeBow(t *testing.T) {
 // 	assert := assert.New(t)
 
 // 	//act (primeiras declarações de objetos)
-// 	_, err := NewCampaign("", content, contacts)
+// 	_, err := NewCampaign("", content, contacts, createBy)
 
 // 	assert.Equal("name is required", err.Error())
 
@@ -89,7 +90,7 @@ func Test_NewCampaign_MustValidateNameMin(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign("aa", content, contacts)
+	_, err := NewCampaign("aa", content, contacts, createBy)
 
 	assert.Equal("name is required min 5", err.Error())
 
@@ -99,7 +100,7 @@ func Test_NewCampaign_MustValidateNameMax(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign(fake.Lorem().Text(30), content, contacts)
+	_, err := NewCampaign(fake.Lorem().Text(30), content, contacts, createBy)
 
 	assert.Equal("name is required max 24", err.Error())
 
@@ -110,7 +111,7 @@ func Test_NewCampaign_MustValidateNameMax(t *testing.T) {
 // 	assert := assert.New(t)
 
 // 	//act (primeiras declarações de objetos)
-// 	_, err := NewCampaign(name, "", contacts)
+// 	_, err := NewCampaign(name, "", contacts, createBy)
 
 // 	assert.Equal("content is required", err.Error())
 
@@ -120,7 +121,7 @@ func Test_NewCampaign_MustValidateContentMin(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign(name, "", contacts)
+	_, err := NewCampaign(name, "", contacts, createBy)
 
 	assert.Equal("content is required min 5", err.Error())
 
@@ -130,7 +131,7 @@ func Test_NewCampaign_MustValidateContentMax(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign(name, fake.Lorem().Text(1040), contacts)
+	_, err := NewCampaign(name, fake.Lorem().Text(1040), contacts, createBy)
 
 	assert.Equal("content is required max 1024", err.Error())
 
@@ -141,7 +142,7 @@ func Test_NewCampaign_MustValidateContacts(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign(name, content, []string{"email_invalid"})
+	_, err := NewCampaign(name, content, []string{"email_invalid"}, createBy)
 
 	assert.Equal("email is invalid", err.Error())
 
@@ -151,7 +152,7 @@ func Test_NewCampaign_MustValidateContactsMin(t *testing.T) {
 	assert := assert.New(t)
 
 	//act (primeiras declarações de objetos)
-	_, err := NewCampaign(name, content, []string{})
+	_, err := NewCampaign(name, content, []string{}, createBy)
 
 	assert.Equal("contacts is required min 1", err.Error())
 
